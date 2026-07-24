@@ -47,16 +47,28 @@ if exist "%DESKTOP%\FarmSync" (
     )
 )
 
-:: ===== [2] Ask for VoltX Credentials =====
+:: ===== [2] Ask for VoltX Credentials (skip if config already has them) =====
 echo.
-echo [*] VoltX Configuration:
+echo [*] Checking VoltX config...
+
 set "VOLT_USER="
 set "VOLT_PASS="
-set /p "VOLT_USER=  [>] Enter VoltX Username (voltUser): "
-set /p "VOLT_PASS=  [>] Enter VoltX Password (voltPass): "
-if "!VOLT_USER!"=="" set "VOLT_USER="
-if "!VOLT_PASS!"=="" set "VOLT_PASS="
-echo [+] VoltX credentials saved
+
+:: Check if config.json already has user/pass filled
+set "CONFIG_HAS_CREDS=0"
+if exist "!VOLTX_DIR!\config.json" (
+    for /f "tokens=*" %%v in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "$j=Get-Content '!VOLTX_DIR!\config.json' -Raw | ConvertFrom-Json; if($j.voltUser -and $j.voltPass){'YES'}else{'NO'}" 2^>nul') do if "%%v"=="YES" set "CONFIG_HAS_CREDS=1"
+)
+if "!CONFIG_HAS_CREDS!"=="1" (
+    for /f "tokens=*" %%u in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "$j=Get-Content '!VOLTX_DIR!\config.json' -Raw | ConvertFrom-Json; $j.voltUser" 2^>nul') do set "VOLT_USER=%%u"
+    for /f "tokens=*" %%p in ('powershell -NoProfile -ExecutionPolicy Bypass -Command "$j=Get-Content '!VOLTX_DIR!\config.json' -Raw | ConvertFrom-Json; $j.voltPass" 2^>nul') do set "VOLT_PASS=%%p"
+    echo [+] Config already has voltUser/voltPass - skip asking
+) else (
+    echo [*] VoltX Configuration:
+    set /p "VOLT_USER=  [>] Enter VoltX Username (voltUser): "
+    set /p "VOLT_PASS=  [>] Enter VoltX Password (voltPass): "
+    echo [+] VoltX credentials saved
+)
 
 :: ===== [3] Download and Install SET RAM =====
 echo.
@@ -99,10 +111,13 @@ if exist "!SETRAM_EXE!" (
             echo [+] Desktop shortcut created: monitor_ram.lnk
             powershell -NoProfile -ExecutionPolicy Bypass -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('!SETRAM_STARTUP_SHORTCUT!'); $s.TargetPath='!SETRAM_EXE!'; $s.WorkingDirectory='!SETRAM_DIR!'; $s.Description='Monitor RAM AutoStart'; $s.Save()"
             echo [+] Startup shortcut added: monitor_ram.lnk
-            taskkill /f /im monitor_ram.exe >nul 2>&1
-            timeout /t 1 /nobreak >nul
-            start "" "!SETRAM_EXE!"
-            echo [+] monitor_ram.exe launched
+            tasklist /fi "imagename eq monitor_ram.exe" 2>nul | find /I "monitor_ram.exe" >nul
+            if errorlevel 1 (
+                start "" "!SETRAM_EXE!"
+                echo [+] monitor_ram.exe launched
+            ) else (
+                echo [+] monitor_ram.exe already running - skip
+            )
         ) else (
             echo [-] monitor_ram.exe not found after extract
         )
@@ -163,10 +178,13 @@ if exist "!VOLTX_HEADLESS!" (
             echo [+] Desktop shortcut created: volt-headless-p2.lnk
             powershell -NoProfile -ExecutionPolicy Bypass -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('!VOLTX_STARTUP_SHORTCUT!'); $s.TargetPath='!VOLTX_HEADLESS!'; $s.WorkingDirectory='!VOLTX_DIR!'; $s.Description='VoltX Headless AutoStart'; $s.Save()"
             echo [+] Startup shortcut added: volt-headless-p2.lnk
-            taskkill /f /im volt-headless-p2.exe >nul 2>&1
-            timeout /t 1 /nobreak >nul
-            start "" "!VOLTX_HEADLESS!"
-            echo [+] volt-headless-p2.exe launched
+            tasklist /fi "imagename eq volt-headless-p2.exe" 2>nul | find /I "volt-headless-p2.exe" >nul
+            if errorlevel 1 (
+                start "" "!VOLTX_HEADLESS!"
+                echo [+] volt-headless-p2.exe launched
+            ) else (
+                echo [+] volt-headless-p2.exe already running - skip
+            )
         ) else (
             echo [-] volt-headless-p2.exe not found after extract
         )
@@ -202,7 +220,7 @@ if exist "!WARP_MSI!" (
     echo [+] Cloudflare WARP already on Desktop - skip download
 ) else (
     echo [*] Downloading 1.1.1.1 WARP...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest '%REPO_RAW%/Cloudflare_WARP.msi' -OutFile '!WARP_MSI!' -UseBasicParsing" 2>nul
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi' -OutFile '!WARP_MSI!' -UseBasicParsing" 2>nul
     if exist "!WARP_MSI!" (
         echo [+] Cloudflare WARP saved to Desktop
         echo [*] Installing Cloudflare WARP silently...
