@@ -200,7 +200,7 @@ if exist "!VOLTX_HEADLESS!" (
 
 :: ===== [5] Download volt.exe to Desktop =====
 echo.
-echo [4/6] Checking volt.exe...
+echo [4/7] Checking volt.exe...
 
 set "VOLT_EXE=%DESKTOP%\volt.exe"
 if exist "!VOLT_EXE!" (
@@ -217,7 +217,7 @@ if exist "!VOLT_EXE!" (
 
 :: ===== [6] Download 1.1.1.1 WARP to Desktop =====
 echo.
-echo [5/6] Checking 1.1.1.1 WARP...
+echo [5/7] Checking 1.1.1.1 WARP...
 
 set "WARP_MSI=%DESKTOP%\Cloudflare_WARP.msi"
 if exist "!WARP_MSI!" (
@@ -239,9 +239,32 @@ if exist "!WARP_MSI!" (
     )
 )
 
-:: ===== [7] Wait for FarmSync (if installing) =====
+:: ===== [7] Download and Install Roblox =====
 echo.
-echo [6/6] Checking FarmSync install status...
+echo [6/7] Checking Roblox...
+
+set "ROBLOX_INSTALLER=%DOWNLOADS%\RobloxPlayerLauncher.exe"
+if exist "!ROBLOX_INSTALLER!" (
+    echo [+] Roblox installer already in Downloads - skip download
+) else (
+    echo [*] Downloading Roblox installer...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://www.roblox.com/download/client?os=win' -OutFile '!ROBLOX_INSTALLER!' -UseBasicParsing" 2>nul
+    if exist "!ROBLOX_INSTALLER!" (
+        echo [+] Roblox installer downloaded
+    ) else (
+        echo [-] Roblox download FAILED
+    )
+)
+
+if exist "!ROBLOX_INSTALLER!" (
+    echo [*] Installing Roblox...
+    start "" /wait "!ROBLOX_INSTALLER!"
+    echo [+] Roblox installation complete
+)
+
+:: ===== [8] Wait for FarmSync (if installing) =====
+echo.
+echo [7/7] Checking FarmSync install status...
 if not "!FARMSYNC_KEY!"=="" (
     if not exist "%DESKTOP%\FarmSync" (
         echo [*] Waiting for FarmSync installation to complete...
