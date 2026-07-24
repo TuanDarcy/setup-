@@ -15,13 +15,13 @@
 
 ## 📖 Table of Contents &bull; Mục Lục
 
-| 🇺🇸 English | 🇻🇳 Tiếng Việt |
-|---|---|
-| [🚀 Quick Start](#-quick-start) | [🚀 Bắt Đầu Nhanh](#-bắt-đầu-nhanh) |
+| 🇺🇸 English                                      | 🇻🇳 Tiếng Việt                                       |
+| ----------------------------------------------- | --------------------------------------------------- |
+| [🚀 Quick Start](#-quick-start)                 | [🚀 Bắt Đầu Nhanh](#-bắt-đầu-nhanh)                 |
 | [📦 What Gets Installed](#-what-gets-installed) | [📦 Những Gì Được Cài Đặt](#-những-gì-được-cài-đặt) |
-| [📁 Repo Structure](#-repo-structure) | [📁 Cấu Trúc Repo](#-cấu-trúc-repo) |
-| [📋 Setup Flow](#-setup-flow) | [📋 Quy Trình Cài Đặt](#-quy-trình-cài-đặt) |
-| [⚠️ Notes](#️-notes) | [⚠️ Ghi Chú](#️-ghi-chú) |
+| [📁 Repo Structure](#-repo-structure)           | [📁 Cấu Trúc Repo](#-cấu-trúc-repo)                 |
+| [📋 Setup Flow](#-setup-flow)                   | [📋 Quy Trình Cài Đặt](#-quy-trình-cài-đặt)         |
+| [⚠️ Notes](#️-notes)                             | [⚠️ Ghi Chú](#️-ghi-chú)                             |
 
 ---
 
@@ -30,7 +30,7 @@
 Open **CMD as Administrator**, paste this single command and press **Enter**:
 
 ```cmd
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://raw.githubusercontent.com/TuanDarcy/setup-/main/setup.bat' -OutFile '$env:TEMP\kaitun-setup.bat' -UseBasicParsing; Start-Process -FilePath '$env:TEMP\kaitun-setup.bat' -Verb RunAs"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://raw.githubusercontent.com/TuanDarcy/setup-/main/setup.bat' -OutFile \"$env:TEMP\kaitun-setup.bat\" -UseBasicParsing; Start-Process -FilePath \"$env:TEMP\kaitun-setup.bat\" -Verb RunAs"
 ```
 
 > That's it. The script handles everything else automatically.
@@ -42,7 +42,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https
 Mở **CMD với quyền Administrator**, dán lệnh sau và nhấn **Enter**:
 
 ```cmd
-powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://raw.githubusercontent.com/TuanDarcy/setup-/main/setup.bat' -OutFile '$env:TEMP\kaitun-setup.bat' -UseBasicParsing; Start-Process -FilePath '$env:TEMP\kaitun-setup.bat' -Verb RunAs"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://raw.githubusercontent.com/TuanDarcy/setup-/main/setup.bat' -OutFile \"$env:TEMP\kaitun-setup.bat\" -UseBasicParsing; Start-Process -FilePath \"$env:TEMP\kaitun-setup.bat\" -Verb RunAs"
 ```
 
 > Chỉ vậy thôi. Script sẽ tự động xử lý mọi thứ còn lại.
@@ -51,25 +51,25 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https
 
 ## 📦 What Gets Installed
 
-| # | Tool | Description |
-|---|------|-------------|
-| 🖥️ | **SET RAM** (`monitor_ram.exe`) | RAM monitor &mdash; auto-starts on boot |
-| ⚡ | **VoltX** (`volt-headless-p2.exe`) | VoltX headless client &mdash; auto-starts on boot |
-| 🔧 | **volt.exe** | Volt executable on Desktop |
-| 🌐 | **Cloudflare WARP** (`1.1.1.1`) | Secure DNS client on Desktop |
-| 🔑 | **FarmSync** | Optional &mdash; only if you provide a key |
+| #   | Tool                               | Description                                       |
+| --- | ---------------------------------- | ------------------------------------------------- |
+| 🖥️  | **SET RAM** (`monitor_ram.exe`)    | RAM monitor &mdash; auto-starts on boot           |
+| ⚡  | **VoltX** (`volt-headless-p2.exe`) | VoltX headless client &mdash; auto-starts on boot |
+| 🔧  | **volt.exe**                       | Volt executable on Desktop                        |
+| 🌐  | **Cloudflare WARP** (`1.1.1.1`)    | Secure DNS client on Desktop                      |
+| 🔑  | **FarmSync**                       | Optional &mdash; only if you provide a key        |
 
 ---
 
 ## 📦 Những Gì Được Cài Đặt
 
-| # | Công Cụ | Mô Tả |
-|---|---------|-------|
-| 🖥️ | **SET RAM** (`monitor_ram.exe`) | Giám sát RAM &mdash; tự động chạy khi khởi động |
-| ⚡ | **VoltX** (`volt-headless-p2.exe`) | VoltX headless client &mdash; tự động chạy khi khởi động |
-| 🔧 | **volt.exe** | Volt executable trên Desktop |
-| 🌐 | **Cloudflare WARP** (`1.1.1.1`) | DNS bảo mật trên Desktop |
-| 🔑 | **FarmSync** | Tùy chọn &mdash; chỉ cài nếu bạn nhập key |
+| #   | Công Cụ                            | Mô Tả                                                    |
+| --- | ---------------------------------- | -------------------------------------------------------- |
+| 🖥️  | **SET RAM** (`monitor_ram.exe`)    | Giám sát RAM &mdash; tự động chạy khi khởi động          |
+| ⚡  | **VoltX** (`volt-headless-p2.exe`) | VoltX headless client &mdash; tự động chạy khi khởi động |
+| 🔧  | **volt.exe**                       | Volt executable trên Desktop                             |
+| 🌐  | **Cloudflare WARP** (`1.1.1.1`)    | DNS bảo mật trên Desktop                                 |
+| 🔑  | **FarmSync**                       | Tùy chọn &mdash; chỉ cài nếu bạn nhập key                |
 
 ---
 
@@ -126,20 +126,20 @@ flowchart TD
 
 ## 📋 Quy Trình Cài Đặt
 
-| Bước | Chi Tiết |
-|:----:|----------|
-| **1** | Kiểm tra FarmSync &rarr; hỏi key nếu chưa có &rarr; cài đặt |
+| Bước  | Chi Tiết                                                      |
+| :---: | ------------------------------------------------------------- |
+| **1** | Kiểm tra FarmSync &rarr; hỏi key nếu chưa có &rarr; cài đặt   |
 | **2** | Hỏi `voltUser` và `voltPass` &rarr; tự điền vào `config.json` |
-| **3** | Tải `SET_RAM.zip` &rarr; giải nén vào `Downloads\SET_RAM` |
-| | &rarr; Tạo shortcut `monitor_ram.exe` trên Desktop |
-| | &rarr; Thêm vào **Startup** (tự chạy khi boot) |
-| | &rarr; **Mở chạy ngay** sau cài đặt |
-| **4** | Tải `VoltX.zip` &rarr; giải nén vào `Downloads\VoltX` |
-| | &rarr; Tự động điền `voltUser`/`voltPass` vào `config.json` |
-| | &rarr; Thêm `volt-headless-p2.exe` vào **Startup** |
-| | &rarr; **Mở chạy ngay** sau cài đặt |
-| **5** | Tải `volt.exe` về Desktop |
-| **6** | Tải `Cloudflare_WARP.exe` (1.1.1.1) về Desktop |
+| **3** | Tải `SET_RAM.zip` &rarr; giải nén vào `Downloads\SET_RAM`     |
+|       | &rarr; Tạo shortcut `monitor_ram.exe` trên Desktop            |
+|       | &rarr; Thêm vào **Startup** (tự chạy khi boot)                |
+|       | &rarr; **Mở chạy ngay** sau cài đặt                           |
+| **4** | Tải `VoltX.zip` &rarr; giải nén vào `Downloads\VoltX`         |
+|       | &rarr; Tự động điền `voltUser`/`voltPass` vào `config.json`   |
+|       | &rarr; Thêm `volt-headless-p2.exe` vào **Startup**            |
+|       | &rarr; **Mở chạy ngay** sau cài đặt                           |
+| **5** | Tải `volt.exe` về Desktop                                     |
+| **6** | Tải `Cloudflare_WARP.exe` (1.1.1.1) về Desktop                |
 
 ---
 
