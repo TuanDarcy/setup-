@@ -81,7 +81,7 @@ TuanDarcy/setup-/
 ├── SET_RAM.zip            # SET RAM package (monitor_ram.exe)
 ├── VoltX.zip              # VoltX package (volt-headless-p2.exe + config.json)
 ├── volt.exe               # Volt executable
-├── Cloudflare_WARP.msi    # 1.1.1.1 WARP installer (auto-install silent)
+├── Cloudflare_WARP.msi    # 1.1.1.1 WARP installer
 └── README.md              # This file
 ```
 
@@ -126,20 +126,20 @@ flowchart TD
 
 ## 📋 Quy Trình Cài Đặt
 
-| Bước  | Chi Tiết                                                      |
-| :---: | ------------------------------------------------------------- |
-| **1** | Kiểm tra FarmSync &rarr; hỏi key nếu chưa có &rarr; cài đặt   |
-| **2** | Hỏi `voltUser` và `voltPass` &rarr; tự điền vào `config.json` |
-| **3** | Tải `SET_RAM.zip` &rarr; giải nén vào `Downloads\SET_RAM`     |
-|       | &rarr; Tạo shortcut `monitor_ram.exe` trên Desktop            |
-|       | &rarr; Thêm vào **Startup** (tự chạy khi boot)                |
-|       | &rarr; **Mở chạy ngay** sau cài đặt                           |
-| **4** | Tải `VoltX.zip` &rarr; giải nén vào `Downloads\VoltX`         |
-|       | &rarr; Tự động điền `voltUser`/`voltPass` vào `config.json`   |
-|       | &rarr; Thêm `volt-headless-p2.exe` vào **Startup**            |
-|       | &rarr; **Mở chạy ngay** sau cài đặt                           |
-| **5** | Tải `volt.exe` về Desktop                                     |
-| **6** | Tải `Cloudflare_WARP.msi` (1.1.1.1) về Desktop & tự động cài đặt   |
+| Bước  | Chi Tiết                                                         |
+| :---: | ---------------------------------------------------------------- |
+| **1** | Kiểm tra FarmSync &rarr; hỏi key nếu chưa có &rarr; cài đặt      |
+| **2** | Hỏi `voltUser` và `voltPass` &rarr; tự điền vào `config.json`    |
+| **3** | Tải `SET_RAM.zip` &rarr; giải nén vào `Downloads\SET_RAM`        |
+|       | &rarr; Tạo shortcut `monitor_ram.exe` trên Desktop               |
+|       | &rarr; Thêm vào **Startup** (tự chạy khi boot)                   |
+|       | &rarr; **Mở chạy ngay** sau cài đặt                              |
+| **4** | Tải `VoltX.zip` &rarr; giải nén vào `Downloads\VoltX`            |
+|       | &rarr; Tự động điền `voltUser`/`voltPass` vào `config.json`      |
+|       | &rarr; Thêm `volt-headless-p2.exe` vào **Startup**               |
+|       | &rarr; **Mở chạy ngay** sau cài đặt                              |
+| **5** | Tải `volt.exe` về Desktop                                        |
+| **6** | Tải `Cloudflare_WARP.msi` (1.1.1.1) về Desktop & tự động cài đặt |
 
 ---
 

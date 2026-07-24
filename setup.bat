@@ -202,7 +202,7 @@ if exist "!WARP_MSI!" (
     echo [+] Cloudflare WARP already on Desktop - skip download
 ) else (
     echo [*] Downloading 1.1.1.1 WARP...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi' -OutFile '!WARP_MSI!' -UseBasicParsing" 2>nul
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest '%REPO_RAW%/Cloudflare_WARP.msi' -OutFile '!WARP_MSI!' -UseBasicParsing" 2>nul
     if exist "!WARP_MSI!" (
         echo [+] Cloudflare WARP saved to Desktop
         echo [*] Installing Cloudflare WARP silently...
