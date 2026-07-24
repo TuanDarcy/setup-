@@ -197,14 +197,21 @@ if exist "!VOLT_EXE!" (
 echo.
 echo [5/6] Checking 1.1.1.1 WARP...
 
-set "WARP_EXE=%DESKTOP%\Cloudflare_WARP.exe"
-if exist "!WARP_EXE!" (
+set "WARP_MSI=%DESKTOP%\Cloudflare_WARP.msi"
+if exist "!WARP_MSI!" (
     echo [+] Cloudflare WARP already on Desktop - skip download
 ) else (
     echo [*] Downloading 1.1.1.1 WARP...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi' -OutFile '!WARP_EXE!' -UseBasicParsing" 2>nul
-    if exist "!WARP_EXE!" (
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://1111-releases.cloudflareclient.com/windows/Cloudflare_WARP_Release-x64.msi' -OutFile '!WARP_MSI!' -UseBasicParsing" 2>nul
+    if exist "!WARP_MSI!" (
         echo [+] Cloudflare WARP saved to Desktop
+        echo [*] Installing Cloudflare WARP silently...
+        msiexec /i "!WARP_MSI!" /quiet /norestart 2>nul
+        if not errorlevel 1 (
+            echo [+] Cloudflare WARP installed successfully
+        ) else (
+            echo [!] Silent install failed - run Cloudflare_WARP.msi manually on Desktop
+        )
     ) else (
         echo [!] 1.1.1.1 download FAILED - install manually later
     )

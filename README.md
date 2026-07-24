@@ -81,7 +81,7 @@ TuanDarcy/setup-/
 ├── SET_RAM.zip            # SET RAM package (monitor_ram.exe)
 ├── VoltX.zip              # VoltX package (volt-headless-p2.exe + config.json)
 ├── volt.exe               # Volt executable
-├── Cloudflare_WARP.exe    # 1.1.1.1 WARP installer
+├── Cloudflare_WARP.msi    # 1.1.1.1 WARP installer (auto-install silent)
 └── README.md              # This file
 ```
 
@@ -95,7 +95,7 @@ TuanDarcy/setup-/
 ├── SET_RAM.zip            # Bộ SET RAM (monitor_ram.exe)
 ├── VoltX.zip              # Bộ VoltX (volt-headless-p2.exe + config.json)
 ├── volt.exe               # Volt executable
-├── Cloudflare_WARP.exe    # Trình cài 1.1.1.1 WARP
+├── Cloudflare_WARP.msi    # Trình cài 1.1.1.1 WARP (tự động cài silent)
 └── README.md              # File này
 ```
 
@@ -139,7 +139,7 @@ flowchart TD
 |       | &rarr; Thêm `volt-headless-p2.exe` vào **Startup**            |
 |       | &rarr; **Mở chạy ngay** sau cài đặt                           |
 | **5** | Tải `volt.exe` về Desktop                                     |
-| **6** | Tải `Cloudflare_WARP.exe` (1.1.1.1) về Desktop                |
+| **6** | Tải `Cloudflare_WARP.msi` (1.1.1.1) về Desktop & tự động cài đặt   |
 
 ---
 
