@@ -15,6 +15,10 @@ set "DOWNLOADS=%USERPROFILE%\Downloads"
 set "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
 set "REPO_RAW=https://raw.githubusercontent.com/TuanDarcy/setup-/main"
 
+:: Pre-define paths needed for early checks
+set "VOLTX_DIR=%DOWNLOADS%\VoltX"
+set "VOLTX_CONFIG=%VOLTX_DIR%\config.json"
+
 echo.
 echo  ==========================================
 echo    KAITUN SETUP - One-Click Installer
@@ -75,7 +79,7 @@ echo.
 echo [2/6] Checking SET RAM (monitor_ram)...
 
 set "SETRAM_DIR=%DOWNLOADS%\SET_RAM"
-set "SETRAM_EXE=%SETRAM_DIR%\monitor_ram.exe"
+set "SETRAM_EXE=%SETRAM_DIR%\dist\monitor_ram.exe"
 set "SETRAM_DESKTOP_SHORTCUT=%DESKTOP%\monitor_ram.lnk"
 set "SETRAM_STARTUP_SHORTCUT=%STARTUP%\monitor_ram.lnk"
 
