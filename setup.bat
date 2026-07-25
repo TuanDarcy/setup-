@@ -251,31 +251,37 @@ set "ROBLOX_INSTALLER=%DOWNLOADS%\RobloxPlayerInstall.exe"
 if exist "!ROBLOX_INSTALLER!" (
     echo [+] Roblox installer already in Downloads - skip download
 ) else (
-    echo [*] Downloading Roblox from GitHub mirror (with retry)...
-    set "ROBLOX_RETRY=0"
-    :ROBLOX_RETRY_LOOP
-    if exist "!ROBLOX_INSTALLER!" del /f /q "!ROBLOX_INSTALLER!" >nul 2>&1
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest '%REPO_RAW%/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -UseBasicParsing } catch {}" 2>nul
-    if exist "!ROBLOX_INSTALLER!" (
-        echo [+] Roblox installer downloaded from GitHub mirror
-        goto :ROBLOX_DOWNLOAD_DONE
-    )
-    set /a ROBLOX_RETRY+=1
-    if !ROBLOX_RETRY! LSS 3 (
-        echo [!] Download failed, retrying (!ROBLOX_RETRY!/3) in 3s...
-        powershell -NoProfile -Command "Start-Sleep -Seconds 3" >nul 2>&1
-        goto :ROBLOX_RETRY_LOOP
-    )
-    echo [!] GitHub mirror FAILED after 3 retries - trying official source...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest 'https://setup.rbxcdn.com/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -Headers @{'User-Agent'='Mozilla/5.0'} -UseBasicParsing } catch {}" 2>nul
-    if exist "!ROBLOX_INSTALLER!" (
-        echo [+] Roblox installer downloaded from official source
-    ) else (
-        echo [-] All download sources FAILED
-    )
-    :ROBLOX_DOWNLOAD_DONE
+    call :DOWNLOAD_ROBLOX
 )
+goto :ROBLOX_INSTALL_CHECK
 
+:DOWNLOAD_ROBLOX
+echo [*] Downloading Roblox from GitHub mirror (with retry)...
+set "ROBLOX_RETRY=0"
+:ROBLOX_RETRY_LOOP
+if exist "!ROBLOX_INSTALLER!" del /f /q "!ROBLOX_INSTALLER!" >nul 2>&1
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest '%REPO_RAW%/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -UseBasicParsing } catch {}" 2>nul
+if exist "!ROBLOX_INSTALLER!" (
+    echo [+] Roblox installer downloaded from GitHub mirror
+    exit /b 0
+)
+set /a ROBLOX_RETRY+=1
+if !ROBLOX_RETRY! GEQ 3 goto :ROBLOX_FALLBACK
+echo [!] Download failed, retrying (!ROBLOX_RETRY!/3) in 3s...
+powershell -NoProfile -Command "Start-Sleep -Seconds 3" >nul 2>&1
+goto :ROBLOX_RETRY_LOOP
+
+:ROBLOX_FALLBACK
+echo [!] GitHub mirror FAILED after 3 retries - trying official source...
+powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest 'https://setup.rbxcdn.com/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -Headers @{'User-Agent'='Mozilla/5.0'} -UseBasicParsing } catch {}" 2>nul
+if exist "!ROBLOX_INSTALLER!" (
+    echo [+] Roblox installer downloaded from official source
+) else (
+    echo [-] All download sources FAILED
+)
+exit /b 0
+
+:ROBLOX_INSTALL_CHECK
 if exist "!ROBLOX_INSTALLER!" (
     echo [*] Installing Roblox...
     start "" /wait "!ROBLOX_INSTALLER!"
