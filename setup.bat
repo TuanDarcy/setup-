@@ -200,7 +200,7 @@ if exist "!VOLTX_HEADLESS!" (
 
 :: ===== [5] Download volt.exe to Desktop =====
 echo.
-echo [4/7] Checking volt.exe...
+echo [4/8] Checking volt.exe...
 
 set "VOLT_EXE=%DESKTOP%\volt.exe"
 if exist "!VOLT_EXE!" (
@@ -217,7 +217,7 @@ if exist "!VOLT_EXE!" (
 
 :: ===== [6] Download 1.1.1.1 WARP to Desktop =====
 echo.
-echo [5/7] Checking 1.1.1.1 WARP...
+echo [5/8] Checking 1.1.1.1 WARP...
 
 set "WARP_MSI=%DESKTOP%\Cloudflare_WARP.msi"
 if exist "!WARP_MSI!" (
@@ -241,7 +241,7 @@ if exist "!WARP_MSI!" (
 
 :: ===== [7] Download and Install Roblox =====
 echo.
-echo [6/7] Checking Roblox...
+echo [6/8] Checking Roblox...
 
 set "ROBLOX_INSTALLER=%DOWNLOADS%\RobloxPlayerLauncher.exe"
 if exist "!ROBLOX_INSTALLER!" (
@@ -262,9 +262,53 @@ if exist "!ROBLOX_INSTALLER!" (
     echo [+] Roblox installation complete
 )
 
-:: ===== [8] Wait for FarmSync (if installing) =====
+:: ===== [8] Download and Install OptimizerRoblox =====
 echo.
-echo [7/7] Checking FarmSync install status...
+echo [7/8] Checking OptimizerRoblox...
+
+set "OPTIMIZER_DIR=%DOWNLOADS%\OptimizerRoblox"
+set "OPTIMIZER_EXE=%OPTIMIZER_DIR%\OptimizerRoblox.exe"
+set "OPTIMIZER_STARTUP_SHORTCUT=%STARTUP%\OptimizerRoblox.lnk"
+
+if exist "!OPTIMIZER_EXE!" (
+    echo [+] OptimizerRoblox already exists - skip download
+    if not exist "!OPTIMIZER_STARTUP_SHORTCUT!" (
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('!OPTIMIZER_STARTUP_SHORTCUT!'); $s.TargetPath='!OPTIMIZER_EXE!'; $s.WorkingDirectory='!OPTIMIZER_DIR!'; $s.Description='OptimizerRoblox'; $s.Save()"
+        echo [+] OptimizerRoblox Startup shortcut added
+    )
+    tasklist /fi "imagename eq OptimizerRoblox.exe" 2>nul | find /I "OptimizerRoblox.exe" >nul
+    if errorlevel 1 (
+        start "" "!OPTIMIZER_EXE!"
+        echo [+] OptimizerRoblox launched
+    ) else (
+        echo [+] OptimizerRoblox already running
+    )
+) else (
+    set "OPTIMIZER_ZIP=%DOWNLOADS%\OptimizerRoblox.zip"
+    if exist "!OPTIMIZER_ZIP!" del /f /q "!OPTIMIZER_ZIP!" >nul 2>&1
+    echo [*] Downloading OptimizerRoblox.zip...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest '%REPO_RAW%/OptimizerRoblox.zip' -OutFile '!OPTIMIZER_ZIP!' -UseBasicParsing" 2>nul
+
+    if exist "!OPTIMIZER_ZIP!" (
+        if exist "!OPTIMIZER_DIR!" rmdir /s /q "!OPTIMIZER_DIR!" >nul 2>&1
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -Path '!OPTIMIZER_ZIP!' -DestinationPath '!OPTIMIZER_DIR!' -Force"
+        if exist "!OPTIMIZER_EXE!" (
+            powershell -NoProfile -ExecutionPolicy Bypass -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('!OPTIMIZER_STARTUP_SHORTCUT!'); $s.TargetPath='!OPTIMIZER_EXE!'; $s.WorkingDirectory='!OPTIMIZER_DIR!'; $s.Description='OptimizerRoblox'; $s.Save()"
+            echo [+] OptimizerRoblox Startup shortcut added
+            start "" "!OPTIMIZER_EXE!"
+            echo [+] OptimizerRoblox launched
+        ) else (
+            echo [-] OptimizerRoblox.exe not found after extract
+        )
+        del /f /q "!OPTIMIZER_ZIP!" >nul 2>&1
+    ) else (
+        echo [-] OptimizerRoblox.zip download FAILED
+    )
+)
+
+:: ===== [9] Wait for FarmSync (if installing) =====
+echo.
+echo [8/8] Checking FarmSync install status...
 if not "!FARMSYNC_KEY!"=="" (
     if not exist "%DESKTOP%\FarmSync" (
         echo [*] Waiting for FarmSync installation to complete...
