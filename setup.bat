@@ -145,7 +145,9 @@ if exist "!VOLTX_HEADLESS!" (
     echo [+] volt-headless-p2.exe already exists - skip download
     :: Update config.json with credentials
     if exist "!VOLTX_CONFIG!" (
-        powershell -NoProfile -ExecutionPolicy Bypass -Command "$json=Get-Content '!VOLTX_CONFIG!' -Raw | ConvertFrom-Json; $json.voltUser='!VOLT_USER!'; $json.voltPass='!VOLT_PASS!'; $json | ConvertTo-Json -Depth 4 | Set-Content '!VOLTX_CONFIG!' -Encoding UTF8"
+        set "VU=!VOLT_USER!"
+        set "VP=!VOLT_PASS!"
+        powershell -NoProfile -ExecutionPolicy Bypass -Command "$json=Get-Content '!VOLTX_CONFIG!' -Raw | ConvertFrom-Json; $json.voltUser=$env:VU; $json.voltPass=$env:VP; $json | ConvertTo-Json -Depth 4 | Set-Content '!VOLTX_CONFIG!' -Encoding UTF8"
         echo [+] config.json updated with voltUser/voltPass
     )
     :: Ensure shortcuts
@@ -175,7 +177,9 @@ if exist "!VOLTX_HEADLESS!" (
         powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -Path '!VOLTX_ZIP!' -DestinationPath '!VOLTX_DIR!' -Force"
         if exist "!VOLTX_HEADLESS!" (
             if exist "!VOLTX_CONFIG!" (
-                powershell -NoProfile -ExecutionPolicy Bypass -Command "$json=Get-Content '!VOLTX_CONFIG!' -Raw | ConvertFrom-Json; $json.voltUser='!VOLT_USER!'; $json.voltPass='!VOLT_PASS!'; $json | ConvertTo-Json -Depth 4 | Set-Content '!VOLTX_CONFIG!' -Encoding UTF8"
+                set "VU=!VOLT_USER!"
+                set "VP=!VOLT_PASS!"
+                powershell -NoProfile -ExecutionPolicy Bypass -Command "$json=Get-Content '!VOLTX_CONFIG!' -Raw | ConvertFrom-Json; $json.voltUser=$env:VU; $json.voltPass=$env:VP; $json | ConvertTo-Json -Depth 4 | Set-Content '!VOLTX_CONFIG!' -Encoding UTF8"
                 echo [+] config.json updated with voltUser/voltPass
             )
             powershell -NoProfile -ExecutionPolicy Bypass -Command "$ws=New-Object -ComObject WScript.Shell; $s=$ws.CreateShortcut('!VOLTX_DESKTOP_SHORTCUT!'); $s.TargetPath='!VOLTX_HEADLESS!'; $s.WorkingDirectory='!VOLTX_DIR!'; $s.Description='VoltX Headless'; $s.Save()"
