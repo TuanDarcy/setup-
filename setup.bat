@@ -239,27 +239,45 @@ if exist "!WARP_MSI!" (
     )
 )
 
-:: ===== [7] Download and Install Roblox =====
+:: ===== [7] Download and Install Roblox (GitHub mirror + retry) =====
 echo.
 echo [6/8] Checking Roblox...
 
-set "ROBLOX_INSTALLER=%DOWNLOADS%\RobloxPlayerLauncher.exe"
+set "ROBLOX_INSTALLER=%DOWNLOADS%\RobloxPlayerInstall.exe"
 if exist "!ROBLOX_INSTALLER!" (
     echo [+] Roblox installer already in Downloads - skip download
 ) else (
-    echo [*] Downloading Roblox installer...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "$wc=New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64)'); try { $wc.DownloadFile('https://www.roblox.com/download/client?os=win&renderingPlatform=nextjs','!ROBLOX_INSTALLER!') } catch { try { Invoke-WebRequest 'https://setup.rbxcdn.com/RobloxPlayerLauncher.exe' -OutFile '!ROBLOX_INSTALLER!' -Headers @{'User-Agent'='Mozilla/5.0'} -UseBasicParsing } catch {} }" 2>nul
+    echo [*] Downloading Roblox from GitHub mirror (with retry)...
+    set "ROBLOX_RETRY=0"
+    :ROBLOX_RETRY_LOOP
+    if exist "!ROBLOX_INSTALLER!" del /f /q "!ROBLOX_INSTALLER!" >nul 2>&1
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest '%REPO_RAW%/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -UseBasicParsing } catch {}" 2>nul
     if exist "!ROBLOX_INSTALLER!" (
-        echo [+] Roblox installer downloaded
-    ) else (
-        echo [-] Roblox download FAILED
+        echo [+] Roblox installer downloaded from GitHub mirror
+        goto :ROBLOX_DOWNLOAD_DONE
     )
+    set /a ROBLOX_RETRY+=1
+    if !ROBLOX_RETRY! LSS 3 (
+        echo [!] Download failed, retrying (!ROBLOX_RETRY!/3) in 3s...
+        powershell -NoProfile -Command "Start-Sleep -Seconds 3" >nul 2>&1
+        goto :ROBLOX_RETRY_LOOP
+    )
+    echo [!] GitHub mirror FAILED after 3 retries - trying official source...
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "try { Invoke-WebRequest 'https://setup.rbxcdn.com/RobloxPlayerInstall.exe' -OutFile '!ROBLOX_INSTALLER!' -Headers @{'User-Agent'='Mozilla/5.0'} -UseBasicParsing } catch {}" 2>nul
+    if exist "!ROBLOX_INSTALLER!" (
+        echo [+] Roblox installer downloaded from official source
+    ) else (
+        echo [-] All download sources FAILED
+    )
+    :ROBLOX_DOWNLOAD_DONE
 )
 
 if exist "!ROBLOX_INSTALLER!" (
     echo [*] Installing Roblox...
     start "" /wait "!ROBLOX_INSTALLER!"
     echo [+] Roblox installation complete
+) else (
+    echo [!] Roblox SKIPPED - no installer available, install manually later
 )
 
 :: ===== [8] Download and Install OptimizerRoblox =====
