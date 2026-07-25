@@ -248,7 +248,7 @@ if exist "!ROBLOX_INSTALLER!" (
     echo [+] Roblox installer already in Downloads - skip download
 ) else (
     echo [*] Downloading Roblox installer...
-    powershell -NoProfile -ExecutionPolicy Bypass -Command "Invoke-WebRequest 'https://www.roblox.com/download/client?os=win' -OutFile '!ROBLOX_INSTALLER!' -UseBasicParsing" 2>nul
+    powershell -NoProfile -ExecutionPolicy Bypass -Command "$wc=New-Object System.Net.WebClient; $wc.Headers.Add('User-Agent','Mozilla/5.0 (Windows NT 10.0; Win64; x64)'); try { $wc.DownloadFile('https://setup.rbxcdn.com/RobloxPlayerLauncher.exe','!ROBLOX_INSTALLER!') } catch { try { Invoke-WebRequest 'https://setup.rbxcdn.com/RobloxPlayerLauncher.exe' -OutFile '!ROBLOX_INSTALLER!' -Headers @{'User-Agent'='Mozilla/5.0'} -UseBasicParsing } catch {} }" 2>nul
     if exist "!ROBLOX_INSTALLER!" (
         echo [+] Roblox installer downloaded
     ) else (
